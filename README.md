@@ -1,38 +1,35 @@
-# practica2-frontend
+# Tienda Online - Vue.js + Laravel
 
-This template should help get you started developing with Vue 3 in Vite.
+## Descripción
+Aplicación Full-Stack de tienda online con CRUD, autenticación, carrito de compras y subida de imágenes.
 
-## Recommended IDE Setup
+## Requisitos
+- PHP 8.2+
+- Node.js 18+
+- Composer
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+## Instalación Backend
+```bash
+cd practica2-auth
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan storage:link
+php artisan serve
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
+## Instalación Frontend
+```bash
+cd practica2-frontend
+npm install
 npm run dev
 ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+## Funcionalidades
+- Registro e inicio de sesión con Laravel Sanctum
+- CRUD de productos con subida de imágenes
+- Catálogo público con búsqueda en tiempo real
+- Carrito de compras persistente con Pinia
+- Panel de administración protegido
+- Rutas públicas y privadas con Vue Router
