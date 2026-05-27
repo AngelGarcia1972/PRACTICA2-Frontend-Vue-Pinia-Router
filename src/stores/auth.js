@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
 			this.token = response.data.token;
 			this.user = response.data.user;
 			localStorage.setItem("token", this.token);
-			router.push("/dashboard");
+			router.push("/admin");
 		},
 
 		async register(data) {
@@ -26,7 +26,7 @@ export const useAuthStore = defineStore("auth", {
 			this.token = response.data.token;
 			this.user = response.data.user;
 			localStorage.setItem("token", this.token);
-			router.push("/dashboard");
+			router.push("/admin");
 		},
 
 		async logout() {

@@ -1,18 +1,40 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import LoginView from "../views/LoginView.vue";
-import RegisterView from "../views/RegisterView.vue";
-import DashboardView from "../views/DashboardView.vue";
 
 const routes = [
-	{ path: "/", redirect: "/login" },
-	{ path: "/login", name: "login", component: LoginView },
-	{ path: "/register", name: "register", component: RegisterView },
+	{ path: "/", component: () => import("../views/HomeView.vue") },
+	{ path: "/catalogo", component: () => import("../views/CatalogoView.vue") },
 	{
-		path: "/dashboard",
-		name: "dashboard",
-		component: DashboardView,
+		path: "/catalogo/:id",
+		component: () => import("../views/ProductoDetalle.vue"),
+		props: true,
+	},
+	{
+		path: "/login",
+		name: "login",
+		component: () => import("../views/LoginView.vue"),
+	},
+	{
+		path: "/register",
+		name: "register",
+		component: () => import("../views/RegisterView.vue"),
+	},
+	{
+		path: "/admin",
+		component: () => import("../layouts/AdminLayout.vue"),
 		meta: { requiresAuth: true },
+		children: [
+			{ path: "", component: () => import("../views/admin/Dashboard.vue") },
+			{
+				path: "productos",
+				component: () => import("../views/admin/Productos.vue"),
+			},
+		],
+	},
+	{
+		path: "/:pathMatch(.*)*",
+		name: "NotFound",
+		component: () => import("../views/NotFound.vue"),
 	},
 ];
 
@@ -21,10 +43,10 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
 	const auth = useAuthStore();
 	if (to.meta.requiresAuth && !auth.isAuthenticated) {
-		return { name: "login" };
+		return { path: "/login", query: { redirect: to.fullPath } };
 	}
 });
 
