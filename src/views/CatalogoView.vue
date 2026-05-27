@@ -3,7 +3,8 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/catalogo">Catálogo</router-link> |
-      <router-link to="/admin">Admin</router-link>
+      <router-link to="/admin">Admin</router-link> |
+      <CartIcon />
     </nav>
 
     <h1>Catálogo de Productos</h1>
@@ -20,25 +21,41 @@
       <p>Precio: ${{ producto.precio }}</p>
       <p>Stock: {{ producto.stock }}</p>
       <router-link :to="`/catalogo/${producto.id}`">Ver detalle</router-link>
+
+      <button @click="carrito.agregar(producto)">
+        <template v-if="carrito.cantidadDeProducto(producto.id) > 0">
+          En carrito ({{ carrito.cantidadDeProducto(producto.id) }})
+        </template>
+        <template v-else>
+          Agregar al carrito
+        </template>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import axios from '../plugins/axios'
+import { ref, computed, onMounted } from "vue";
+import axios from "../plugins/axios";
+import { useCarritoStore } from "../stores/carrito";
+import CartIcon from "../components/CartIcon.vue";
 
-const productos = ref([])
-const busqueda = ref('')
+const productos = ref([]);
+const busqueda = ref("");
+const carrito = useCarritoStore();
+
+carrito.$subscribe((mutation, state) => {
+	localStorage.setItem("carrito", JSON.stringify(state.items));
+});
 
 onMounted(async () => {
-  const response = await axios.get('/productos')
-  productos.value = response.data
-})
+	const response = await axios.get("/productos");
+	productos.value = response.data;
+});
 
 const productosFiltrados = computed(() =>
-  productos.value.filter(p =>
-    p.nombre.toLowerCase().includes(busqueda.value.toLowerCase())
-  )
-)
+	productos.value.filter((p) =>
+		p.nombre.toLowerCase().includes(busqueda.value.toLowerCase()),
+	),
+);
 </script>

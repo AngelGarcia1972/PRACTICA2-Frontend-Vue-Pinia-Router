@@ -31,6 +31,7 @@ const routes = [
 			},
 		],
 	},
+	{ path: "/carrito", component: () => import("../views/CartView.vue") },
 	{
 		path: "/:pathMatch(.*)*",
 		name: "NotFound",
